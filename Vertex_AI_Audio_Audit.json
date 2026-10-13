@@ -33,7 +33,7 @@
         "filter": {
           "folderId": {
             "__rl": true,
-            "value": "1ZKSDhOWTvBSGUzkRpy9tVcjvIx1DeabS",
+            "value": "<DRIVE_OR_SHEET_ID>",
             "mode": "id"
           }
         },
@@ -49,8 +49,8 @@
       "name": "Find GDrive Folder/Пошук папки на GDrive",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "YOUR_CREDENTIAL_ID",
-          "name": "Generic_API_Connection"
+          "id": "<GOOGLEDRIVEOAUTH2API_CRED_ID>",
+          "name": "Google Drive обробка датасету"
         }
       }
     },
@@ -69,7 +69,7 @@
     },
     {
       "parameters": {
-        "command": "=mkdir -p /opt/n8n_data/datasets/{{ $('Init Variables/Ініціалізація змінних').item.json.project_label }}\ngcloud auth activate-service-account --key-file=/opt/n8n_data/gcp-key.json && gsutil mb -p your-gcp-project-id -l us-central1 gs://{{ $('Init Variables/Ініціалізація змінних').item.json.bucket_name }}"
+        "command": "=mkdir -p /opt/n8n_data/datasets/{{ $('Init Variables/Ініціалізація змінних').item.json.project_label }}\ngcloud auth activate-service-account --key-file=/opt/n8n_data/gcp-key.json && gsutil mb -p <GCP_PROJECT_ID> -l us-central1 gs://{{ $('Init Variables/Ініціалізація змінних').item.json.bucket_name }}"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
@@ -81,14 +81,14 @@
       "name": "Provision GCS Bucket/Створення бакета в хмарі",
       "credentials": {
         "sshPassword": {
-          "id": "YOUR_CREDENTIAL_ID",
-          "name": "Generic_API_Connection"
+          "id": "<SSHPASSWORD_CRED_ID>",
+          "name": "SSH Password account"
         }
       }
     },
     {
       "parameters": {
-        "command": "=gcloud auth activate-service-account --key-file=/opt/n8n_data/gcp-key.json && \\\nrclone --config /opt/n8n_data/rclone/rclone.conf \\\ncopy gdrive:/{{ $('Init Variables/Ініціалізація змінних').item.json.gdrive_audio_folder }}/ \\\n:googlecloudstorage,service_account_file='/opt/n8n_data/gcp-key.json',project='your-gcp-project-id':{{ $('Init Variables/Ініціалізація змінних').item.json.bucket_name }}/audio/ \\\n--transfers 16 -v"
+        "command": "=gcloud auth activate-service-account --key-file=/opt/n8n_data/gcp-key.json && \\\nrclone --config /opt/n8n_data/rclone/rclone.conf \\\ncopy gdrive:/{{ $('Init Variables/Ініціалізація змінних').item.json.gdrive_audio_folder }}/ \\\n:googlecloudstorage,service_account_file='/opt/n8n_data/gcp-key.json',project='<GCP_PROJECT_ID>':{{ $('Init Variables/Ініціалізація змінних').item.json.bucket_name }}/audio/ \\\n--transfers 16 -v"
       },
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
@@ -100,8 +100,8 @@
       "name": "Ingest Audio (Rclone)/Копіювання аудіо (Rclone)",
       "credentials": {
         "sshPassword": {
-          "id": "YOUR_CREDENTIAL_ID",
-          "name": "Generic_API_Connection"
+          "id": "<SSHPASSWORD_CRED_ID>",
+          "name": "SSH Password account"
         }
       }
     },
@@ -125,8 +125,8 @@
       "id": "65e74f91-ef49-4477-92d2-6337277d5c82",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "YOUR_CREDENTIAL_ID",
-          "name": "Generic_API_Connection"
+          "id": "<GOOGLEDRIVEOAUTH2API_CRED_ID>",
+          "name": "Google Drive обробка датасету"
         }
       }
     },
@@ -144,8 +144,8 @@
       "name": "Save CSV to Host/Збереження CSV на сервер",
       "credentials": {
         "sshPassword": {
-          "id": "YOUR_CREDENTIAL_ID",
-          "name": "Generic_API_Connection"
+          "id": "<SSHPASSWORD_CRED_ID>",
+          "name": "SSH Password account"
         }
       }
     },
@@ -163,8 +163,8 @@
       "name": "Generate JSONL Batches/Нарізка датасету на батчі",
       "credentials": {
         "sshPassword": {
-          "id": "YOUR_CREDENTIAL_ID",
-          "name": "Generic_API_Connection"
+          "id": "<SSHPASSWORD_CRED_ID>",
+          "name": "SSH Password account"
         }
       }
     },
@@ -182,8 +182,8 @@
       "name": "List Batch Files/Сканування списку файлів",
       "credentials": {
         "sshPassword": {
-          "id": "YOUR_CREDENTIAL_ID",
-          "name": "Generic_API_Connection"
+          "id": "<SSHPASSWORD_CRED_ID>",
+          "name": "SSH Password account"
         }
       }
     },
@@ -217,7 +217,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://us-central1-aiplatform.googleapis.com/v1/projects/your-gcp-project-id/locations/us-central1/batchPredictionJobs",
+        "url": "https://us-central1-aiplatform.googleapis.com/v1/projects/<GCP_PROJECT_ID>/locations/us-central1/batchPredictionJobs",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "googleApi",
         "sendBody": true,
@@ -239,12 +239,12 @@
       "waitBetweenTries": 5000,
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "YOUR_CREDENTIAL_ID",
-          "name": "Generic_API_Connection"
+          "id": "<GOOGLEDRIVEOAUTH2API_CRED_ID>",
+          "name": "Google Drive обробка датасету"
         },
         "googleApi": {
-          "id": "YOUR_CREDENTIAL_ID",
-          "name": "Generic_API_Connection"
+          "id": "<GOOGLEAPI_CRED_ID>",
+          "name": "Google Service Account account"
         }
       }
     },
@@ -260,8 +260,7 @@
         56
       ],
       "typeVersion": 1,
-      "id": "284e6116-9131-44f4-8ad5-d4e5f77fe081",
-      "webhookId": "YOUR_WEBHOOK_ID"
+      "id": "284e6116-9131-44f4-8ad5-d4e5f77fe081"
     },
     {
       "parameters": {
@@ -283,8 +282,8 @@
       "waitBetweenTries": 5000,
       "credentials": {
         "googleApi": {
-          "id": "YOUR_CREDENTIAL_ID",
-          "name": "Generic_API_Connection"
+          "id": "<GOOGLEAPI_CRED_ID>",
+          "name": "Google Service Account account"
         }
       }
     },
@@ -335,8 +334,8 @@
       "name": "arse & Merge Results/Збірка та парсинг результатів",
       "credentials": {
         "sshPassword": {
-          "id": "YOUR_CREDENTIAL_ID",
-          "name": "Generic_API_Connection"
+          "id": "<SSHPASSWORD_CRED_ID>",
+          "name": "SSH Password account"
         }
       }
     },
@@ -354,14 +353,14 @@
       "name": "Export Final CSV/Експорт звіту на GDrive",
       "credentials": {
         "sshPassword": {
-          "id": "YOUR_CREDENTIAL_ID",
-          "name": "Generic_API_Connection"
+          "id": "<SSHPASSWORD_CRED_ID>",
+          "name": "SSH Password account"
         }
       }
     },
     {
       "parameters": {
-        "sendTo": "your.email@example.com",
+        "sendTo": "<NOTIFY_EMAIL>",
         "subject": "📊 Результати аудиту аудіо (Gemini 2.5 Flash)",
         "message": "=<div style=\"font-family: Arial, sans-serif; color: #333333; line-height: 1.6; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 10px; padding: 25px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);\">\n    \n    <div style=\"text-align: center; margin-bottom: 20px;\">\n        <h2 style=\"color: #4285F4; margin: 0;\">🤖 Аудит Датасету Завершено!</h2>\n    </div>\n\n    <p style=\"font-size: 16px;\">Привіт!</p>\n    \n    <p style=\"font-size: 16px;\">Твій n8n воркфлоу успішно обробив великий датасет через нейромережу <b>Google Gemini 2.5 Flash</b>.</p>\n\n    <div style=\"background-color: #f8f9fa; border-radius: 8px; padding: 15px; border-left: 5px solid #34A853; margin: 25px 0;\">\n        <p style=\"margin: 5px 0; font-size: 15px;\"><b>✅ Статус:</b> Всі батчі оброблено та склеєно</p>\n        <p style=\"margin: 5px 0; font-size: 15px;\"><b>📁 Файл:</b> final_ready.csv</p>\n        <p style=\"margin: 5px 0; font-size: 15px;\"><b>☁️ Розташування:</b> Завантажено на Google Drive у папку <b>{{ $('Init Variables/Ініціалізація змінних').first().json.gdrive_audio_folder }}</b></p>\n    </div>\n\n    <p style=\"font-size: 16px;\">Перейди у свій Google Drive у відповідну папку, щоб завантажити результати.</p>\n\n    <hr style=\"border: none; border-top: 1px solid #eeeeee; margin: 30px 0 20px 0;\" />\n    \n    <div style=\"text-align: center; font-size: 12px; color: #888888;\">\n        <p style=\"margin: 0;\">Цей лист згенеровано автоматично твоїм конвеєром в n8n 🚀</p>\n    </div>\n\n</div>",
         "options": {}
@@ -374,11 +373,10 @@
       ],
       "id": "45e8a94d-1833-47e0-8024-8e6d70d48750",
       "name": "Send HTML Report/Відправка HTML-звіту",
-      "webhookId": "YOUR_WEBHOOK_ID",
       "credentials": {
         "gmailOAuth2": {
-          "id": "YOUR_CREDENTIAL_ID",
-          "name": "Generic_API_Connection"
+          "id": "<GMAILOAUTH2_CRED_ID>",
+          "name": "Gmail account 2"
         }
       }
     },
@@ -396,13 +394,12 @@
       "name": "Destroy Temp Resources/Очищення інфраструктури",
       "credentials": {
         "sshPassword": {
-          "id": "YOUR_CREDENTIAL_ID",
-          "name": "Generic_API_Connection"
+          "id": "<SSHPASSWORD_CRED_ID>",
+          "name": "SSH Password account"
         }
       }
     }
   ],
-  "pinData": {},
   "connections": {
     "Manual Trigger/Ручний запуск": {
       "main": [
@@ -619,14 +616,6 @@
   },
   "active": false,
   "settings": {
-    "executionOrder": "v1",
-    "binaryMode": "separate"
-  },
-  "versionId": "2a7fd516-4a6c-4682-9be7-7006c5ce8632",
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "YOUR_INSTANCE_ID"
-  },
-  "id": "DtU7ABWOBPzkqYQI",
-  "tags": []
+    "executionOrder": "v1"
+  }
 }

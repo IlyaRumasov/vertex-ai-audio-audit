@@ -1,3 +1,5 @@
+> **Archived.** This is the first version of the pipeline. The current, rewritten project (blind two-step transcription, Vertex AI Batch without SSH, tests) lives in **[ai-audio-qa-pipeline-evolution](https://github.com/IlyaRumasov/ai-audio-qa-pipeline-evolution)**.
+
 # 🎧 Vertex AI Audio Audit (ETL Pipeline)
 
 ## 📋 Про проєкт
